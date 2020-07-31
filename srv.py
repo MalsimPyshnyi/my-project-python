@@ -7,6 +7,8 @@ print(PORT)
 
 class MyHandler(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
+        x = 1
+
         content = f"""
         <html>
         <head>
