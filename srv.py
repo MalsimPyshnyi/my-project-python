@@ -12,14 +12,18 @@ class MyHandler(SimpleHTTPRequestHandler):
         <head>
         <title>XXX</title>
         </head>
-        <body>Hello world</body>
+        <body>
+        <h1>Hello world</h1> 
+        <p>path: {self.path}</p>
+        <p>x: {}</p>
+        </body>
         </html>
         """
 
         self.send_response(200)
         self.send_header("Content-type", "text/html") #Заголовки = устанавливаем тип
         self.send_header("Content-length", str(len(content))) #Заголовки = устанавливаем длину и задаем тип символы
-        self.end_headers()
+        self.end_headers() #обязательна пустая строкаа вставляется - разобраться
         self.wfile.write(content.encode()) #Записываем файл
 
 if __name__ == "__main__":
