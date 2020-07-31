@@ -7,7 +7,7 @@ print(PORT)
 
 class MyHandler(SimpleHTTPRequestHandler):
     def handle_root(self): #пищем функцию чтобы далее ее вызвать
-        pass
+        return super().do_GET() #обращаемся к родителю
 
     def handle_hello(self): #пишем также функцию чтобы во втором if ее вызвать
         content = f"""
