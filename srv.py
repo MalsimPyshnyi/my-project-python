@@ -9,7 +9,9 @@ class MyHandler(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
         content = """
         <html>
-        <head><title>XXX</title></head>
+        <head>
+        <title>XXX</title>
+        </head>
         <body>Hello world</body>
         </html>
         """
