@@ -18,7 +18,6 @@ class MyHandler(SimpleHTTPRequestHandler):
         <body>
         <h1>Hello world</h1> 
         <p>path: {self.path}</p>
-        <p>x: {x}</p>
         </body>
         </html>
         """
@@ -39,8 +38,6 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.handle_hello() #вызываем  функцию, что хотим показывать
         else:
             self.handle_404() #вызываем  функцию, что хотим показывать
-
-        x = 1
 
 if __name__ == "__main__":
     with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
