@@ -15,7 +15,7 @@ class MyHandler(SimpleHTTPRequestHandler):
         <body>
         <h1>Hello world</h1> 
         <p>path: {self.path}</p>
-        <p>x: {}</p>
+        <p>x: {x}</p>
         </body>
         </html>
         """
