@@ -1,2 +1,2 @@
-web: python -m sry.py
+web: python -m srv.py
 
