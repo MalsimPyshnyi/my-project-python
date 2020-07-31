@@ -1,2 +1,2 @@
-web: python -m http.server $PORT
+web: python -m sry.py
 
