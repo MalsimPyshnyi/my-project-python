@@ -1,2 +1,2 @@
-web: python3 -m srv.py
+web: python -m srv
 
