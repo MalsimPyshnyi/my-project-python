@@ -22,19 +22,19 @@ class MyHandler(SimpleHTTPRequestHandler):
         </html>
         """
 
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")  # Заголовки = устанавливаем тип
-        self.send_header("Content-length", str(len(content)))  # Заголовки = устанавливаем длину и задаем тип символы
-        self.end_headers()  # обязательна пустая строкаа вставляется - разобраться
-        self.wfile.write(content.encode())  # Записываем файл
+        self.send_respond(content) #используем аргумень контент и значение оттуда подставляется
 
     def handle_404(self):
         msg = """NOT FOUND!!!!!!!"""
-        self.send_response(404)
-        self.send_header("Content-type", "text/plain")  # Заголовки = устанавливаем тип
-        self.send_header("Content-length", str(len(msg)))
-        self.end_headers()  # обязательна пустая строкаа вставляется - разобраться
-        self.wfile.write(content.encode())
+
+        self.send_respond(msg, сode=404)
+
+    def respond(self, message,code=200):  #функция которая будет передаватьяс в 404, 200 и так длаее
+        self.send_response(code)
+        self.send_header("Content-type", "text/html")
+        self.send_header("Content-length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(message.encode())
 
     def do_GET(self): #метод, в котором мы задаем условия
         path = self.build_path() # Тут не очень понял
