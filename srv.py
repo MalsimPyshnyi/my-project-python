@@ -15,7 +15,7 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.handle_root() #вызываем  функцию, что хотим показывать
         elif path == "/hello/": #elif значит, что образуется  цепочка и если  на первом iF выполниться, то  мы не выйдем, а если не выполнится - то выйдем из условия
             self.handle_hello() #вызываем  функцию, что хотим показывать
-        elif path = "/": #путь
+        elif path = "/style/": #путь
             self.handle_style()
         else:
             self.handle_404() #вызываем  функцию, что хотим показывать
