@@ -2,7 +2,7 @@ from http.server import SimpleHTTPRequestHandler
 
 import settings
 
-class MyHandler(SimpleHTTPRequestHandler):
+class MyHttp(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
         path = self.build_path() # Тут не очень понял
 
