@@ -1,6 +1,6 @@
-import os
-import socketserver
 from http.server import SimpleHTTPRequestHandler
+
+import setting
 
 PORT = int(os.getenv("PORT", 8000))
 print(PORT)
@@ -15,6 +15,8 @@ class MyHandler(SimpleHTTPRequestHandler):
             self.handle_root() #вызываем  функцию, что хотим показывать
         elif path == "/hello/": #elif значит, что образуется  цепочка и если  на первом iF выполниться, то  мы не выйдем, а если не выполнится - то выйдем из условия
             self.handle_hello() #вызываем  функцию, что хотим показывать
+        elif path = "/": #путь
+            self.handle_style()
         else:
             self.handle_404() #вызываем  функцию, что хотим показывать
 
@@ -35,6 +37,15 @@ class MyHandler(SimpleHTTPRequestHandler):
         """
 
         self.respond(content) #используем аргумень контент и значение оттуда подставляется
+
+    def handle_style(self):
+        css_file =".settings.PROJECT_DIR" / "style.css" #файл если в папке то "styles" / "styles.css"
+        if not css_file.exists():
+            return self.handle_404()
+        with css_file.open("r") as fp: #открываем файл в роежиме чтения
+            css = fp.read()
+
+        self.respond(css, content_type="text/css")
 
     def handle_404(self):
         msg = """NOT FOUND!!!!!!!"""
