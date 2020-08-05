@@ -65,9 +65,4 @@ class MyHandler(SimpleHTTPRequestHandler):
 
         if self.path[-1] != "/": #Говорим, что тут мы доставляем / . Последний символ -1 не равно /, то доставляем /
             result = f"{result}/" #показываем результат со слешем
-        return result #иначе мы просто показываем путь со слэшем
-
-if __name__ == "__main__":
-    with socketserver.TCPServer(("", PORT), MyHandler) as httpd:
-        print("it" + " works")
-        httpd.serve_forever(poll_interval=1)
+        return result #иначе мы просто показываем путь со слэше
