@@ -1,6 +1,6 @@
 from http.server import SimpleHTTPRequestHandler
 
-import setting
+import settings
 
 PORT = int(os.getenv("PORT", 8000))
 print(PORT)
