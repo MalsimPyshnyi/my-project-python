@@ -2,11 +2,6 @@ from http.server import SimpleHTTPRequestHandler
 
 import settings
 
-PORT = int(os.getenv("PORT", 8000))
-print(PORT)
-
-CACHE_AGE = 60 * 60 * 24
-
 class MyHandler(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
         path = self.build_path() # Тут не очень понял
