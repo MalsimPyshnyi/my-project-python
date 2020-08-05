@@ -39,9 +39,9 @@ class MyHandler(SimpleHTTPRequestHandler):
     def handle_404(self):
         msg = """NOT FOUND!!!!!!!"""
 
-        self.respond(msg, сode=404, content_type="text/plain")
+        self.respond(msg, code=404, content_type="text/plain")
 
-    def respond(self, message,code=200, content_type="text/html"):  #функция которая будет передаватьяс в 404, 200 и так длаее
+    def respond(self, message, code=200, content_type="text/html"):  #функция которая будет передаватьяс в 404, 200 и так длаее
         self.send_response(code)
         self.send_header("Content-type", content_type)
         self.send_header("Content-length", str(len(content)))
