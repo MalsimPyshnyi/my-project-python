@@ -53,10 +53,10 @@ class MyHttp(SimpleHTTPRequestHandler):
         self.send_header("Content-length", str(len(content)))
         self.send_header("Cache-control", f"max-age={CACHE_AGE}")
         self.end_headers()
-        self.wfile.write(message.encode())
 
         if isinstance(message, str):
             message = message.encode()
+        self.wfile.write(message)
 
     def build_path(self) -> str: #разобраться, -> подсказка типа - в данном случае возврат данных строка
         result = self.path #тут оператор присваивания, нужно понять что такое self.path
