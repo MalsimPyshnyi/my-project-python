@@ -1,2 +1,2 @@
-web: python -m srv
+web: python -m server
 

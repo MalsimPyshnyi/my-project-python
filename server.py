@@ -60,6 +60,9 @@ class MyHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(message.encode())
 
+        if isinstance(message, str):
+            message = message.encode()
+
     def build_path(self) -> str: #разобраться, -> подсказка типа - в данном случае возврат данных строка
         result = self.path #тут оператор присваивания, нужно понять что такое self.path
 
