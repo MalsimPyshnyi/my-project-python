@@ -50,8 +50,8 @@ class MyHttp(SimpleHTTPRequestHandler):
     def respond(self, message, code=200, content_type="text/html"):  #функция которая будет передаватьяс в 404, 200 и так длаее
         self.send_response(code)
         self.send_header("Content-type", content_type)
-        self.send_header("Content-length", str(len(content)))
-        self.send_header("Cache-control", f"max-age={CACHE_AGE}")
+        self.send_header("Content-length", str(len(message)))
+        self.send_header("Cache-control", f"max-age={settings.CACHE_AGE}")
         self.end_headers()
 
         if isinstance(message, str):
