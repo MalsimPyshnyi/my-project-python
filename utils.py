@@ -1,3 +1,6 @@
+import settings
+from errors import NotFound
+
 def normalize_path(path: str) -> str:
     if not path:
         return "/"
@@ -9,7 +12,7 @@ def normalize_path(path: str) -> str:
 
     return normalized_path
 
-def to_bytes(text: Union[str, bytes]) -> bytes:
+def to_bytes(text) -> bytes:
     if isinstance(text, bytes):
         return text
 
