@@ -1,3 +1,4 @@
+import mimetypes
 import settings
 from errors import NotFound
 
