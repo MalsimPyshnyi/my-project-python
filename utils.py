@@ -59,3 +59,18 @@ def get_name_from_qs(qs: str) -> str:
             return value
 
     return "world"
+
+def get_age_from_qs(qs: str) ->str:
+    if not qs:
+        return "enter the number"
+
+    pairs = qs.split("&")
+
+    for pair in pairs:
+        if "=" not in pair:
+            continue
+        key, value = pair.split("=")
+        if key == "yyy":
+            return value
+
+        return ""

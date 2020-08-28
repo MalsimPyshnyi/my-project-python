@@ -73,6 +73,8 @@ class MyHttp(SimpleHTTPRequestHandler):
             <label for="xxx-id">Your name:</label>
             <input type="text" name="xxx" id="xxx-id">
             <button type="submit">Greet</button>
+            <label for="yyy-id">Your age:</label>
+            <input type="text" name="yyy" id="yyy-id">
         </form>
 
         </body>
