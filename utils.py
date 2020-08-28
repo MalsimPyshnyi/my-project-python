@@ -73,4 +73,4 @@ def get_age_from_qs(qs: str) ->str:
         if key == "yyy":
             return value
 
-        return ""
+        return "2020"
