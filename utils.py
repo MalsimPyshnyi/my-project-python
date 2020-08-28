@@ -2,16 +2,17 @@ import mimetypes
 import settings
 from errors import NotFound
 
-def normalize_path(path: str) -> str:
-    if not path:
-        return "/"
 
-    normalized_path = path
+#def normalize_path(path: str) -> str:
+    #if not path:
+        #return "/"
 
-    if normalized_path[-1] != "/":
-        normalized_path = f"{normalized_path}/"
+    #normalized_path = path
 
-    return normalized_path
+    #if normalized_path[-1] != "/":
+        #normalized_path = f"{normalized_path}/"
+
+    #return normalized_path
 
 def to_bytes(text) -> bytes:
     if isinstance(text, bytes):
