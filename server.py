@@ -98,9 +98,9 @@ class MyHttp(SimpleHTTPRequestHandler):
         #image = read_static("images/images.svg")
         #self.respond(image, content_type="image/svg+xml")
 
-    def handle_static(self, file_path, ct):
+    def handle_static(self, file_path, content_type):
         content = read_static(file_path)
-        self.respond(content, content_type=ct)
+        self.respond(content, content_type=content_type)
 
     #def handle_images(self):
         #img_file = settings.PROJECT_DIR / "images" / "images.png"
