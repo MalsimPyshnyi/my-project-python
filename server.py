@@ -8,6 +8,7 @@ from errors import NotFound
 #from utils import normalize_path
 from utils import to_bytes
 from utils import read_static
+from utils import get_name_from_qs
 
 class MyHttp(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
