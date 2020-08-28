@@ -55,8 +55,8 @@ class MyHttp(SimpleHTTPRequestHandler):
         #else:
             #self.handle_404() #вызываем  функцию, что хотим показывать
 
-    def handle_root(self): #пищем функцию чтобы далее ее вызвать
-        return super().do_GET() #обращаемся к родителю
+    #def handle_root(self): #пищем функцию чтобы далее ее вызвать
+        #return super().do_GET() #обращаемся к родителю
 
     def handle_hello(self, endpoint):
         name = get_name_from_qs(endpoint.query_string)
