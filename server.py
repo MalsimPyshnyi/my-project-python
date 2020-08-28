@@ -8,8 +8,10 @@ from errors import NotFound
 #from utils import normalize_path
 from utils import to_bytes
 from utils import read_static
-from utils import get_name_from_qs
-from utils import get_age_from_qs
+#from utils import get_name_from_qs
+#from utils import get_age_from_qs
+from utils import get_user_data
+from datetime import datetime
 
 class MyHttp(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
@@ -60,23 +62,23 @@ class MyHttp(SimpleHTTPRequestHandler):
         #return super().do_GET() #обращаемся к родителю
 
     def handle_hello(self, endpoint):
-        name = get_name_from_qs(endpoint.query_string)
-        age = get_age_from_qs(endpoint.query_string)
-        year = 2020 - age
+        name, age = get_user_data(endpoint.query_string)
+        #age = get_age_from_qs(endpoint.query_string)
+        year = datetime.today().year - user.age
 
         content = f"""
         <html>
         <head><title>Hello Page</title></head>
         <body>
-        <h1>Hello {name}!</h1>
+        <h1>Hello {user.name}!</h1>
         <h1>You was born at {year}!</h1>
         <p>path: {self.path}</p>
 
         <form>
-            <label for="xxx-id">Your name:</label>
-            <input type="text" name="xxx" id="xxx-id">
-            <label for="yyy-id">Your age:</label>
-            <input type="text" name="yyy" id="yyy-id">
+            <label for="name-id">Your name:</label>
+            <input type="text" name="name" id="name-id">
+            <label for="age-id">Your age:</label>
+            <input type="text" name="age" id="age-id">
             <button type="submit">Greet</button>
         </form>
 

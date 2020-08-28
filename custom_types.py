@@ -30,3 +30,7 @@ class Endpoint(NamedTuple):
         return Endpoint(
             original=path, normal=normal, file_name=file_name, query_string=qs
         )
+
+class User(NamedTuple):
+    name: str
+    age: int

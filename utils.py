@@ -1,6 +1,7 @@
 import mimetypes
 import settings
 from errors import NotFound
+from custom_types import User
 
 
 #def normalize_path(path: str) -> str:
@@ -44,33 +45,54 @@ def get_content_type(file_path: str) -> str:
     content_type, _ = mimetypes.guess_type(file_path)
     return content_type
 
+# def get_user_data(qs: str) -> dict:
+#     qp = parse_qs(qs) #Делает штуки со сплитами, запомнить!
+#     name = qp.get("name", ["world"])[0] #На выходных выучить работу с диктами
+#     age = int(qp.get("name", [0])[0])
+#
+#     return User(name=name, age=age)
 
-def get_name_from_qs(qs: str) -> str:
-    if not qs:
-        return "world"
+def get_user_data(qs: str) -> User:
+    qp = parse_qs(qs)
 
-    pairs = qs.split("&")
+    default_list_of_names = "world"
+    default_list_of_ages = 0
 
-    for pair in pairs:
-        if "=" not in pair:
-            continue
-        key, value = pair.split("=")
-        if key == "xxx":
-            return value
+    list_of_names = qp.get("name", default_list_of_names)
+    list_of_ages = qp.get("age", default_list_of_ages)
 
-    return "world"
+    name = list_of_names[0]
+    age = int(list_of_ages[0])
 
-def get_age_from_qs(qs: str) ->int:
-    if not qs:
-        return 2020
+    return User(name=name, age=age)
 
-    pairs = qs.split("&")
+#def get_name_from_qs(qs: str) -> str:
+    #name = "world"
 
-    for pair in pairs:
-        if "=" not in pair:
-            continue
-        key, value = pair.split("=")
-        if key == "yyy":
-            return value
+    #if qs:
+        #pairs = qs.split("&")
 
-        return 2020
+    #for pair in pairs:
+        #if "=" not in pair:
+            #continue
+        #key, value = pair.split("=")
+        #if key == "xxx":
+            #name = value
+            #break
+
+    #return name
+
+# def get_age_from_qs(qs: str) ->int:
+#     if not qs:
+#         return 2020
+#
+#     pairs = qs.split("&")
+#
+#     for pair in pairs:
+#         if "=" not in pair:
+#             continue
+#         key, value = pair.split("=")
+#         if key == "yyy":
+#             return value
+#
+#         return 2020
