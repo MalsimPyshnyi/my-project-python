@@ -9,6 +9,7 @@ from errors import NotFound
 from utils import to_bytes
 from utils import read_static
 from utils import get_name_from_qs
+from utils import get_age_from_qs
 
 class MyHttp(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
@@ -60,21 +61,21 @@ class MyHttp(SimpleHTTPRequestHandler):
 
     def handle_hello(self, endpoint):
         name = get_name_from_qs(endpoint.query_string)
-
+        your = get_age_from_qs(endpoint.query_string)
         content = f"""
         <html>
         <head><title>Hello Page</title></head>
         <body>
         <h1>Hello {name}!</h1>
-        <h1>You was born at {2020}!</h1>
+        <h1>You was born at {your}!</h1>
         <p>path: {self.path}</p>
 
         <form>
             <label for="xxx-id">Your name:</label>
             <input type="text" name="xxx" id="xxx-id">
-            <button type="submit">Greet</button>
             <label for="yyy-id">Your age:</label>
             <input type="text" name="yyy" id="yyy-id">
+            <button type="submit">Greet</button>
         </form>
 
         </body>
