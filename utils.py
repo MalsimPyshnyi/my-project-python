@@ -63,7 +63,7 @@ def get_user_data(qs: str) -> User:
     list_of_ages = qp.get("age", default_list_of_ages)
 
     name = list_of_names[0]
-    age = int(list_of_ages[0])
+    age = list_of_ages[0]
 
     return User(name=name, age=age)
 
