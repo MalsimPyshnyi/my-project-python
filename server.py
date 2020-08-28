@@ -82,9 +82,9 @@ class MyHttp(SimpleHTTPRequestHandler):
         self.respond(content)
 
 
-    def handle_style(self):
-        css = read_static("styles/style.css")
-        self.respond(css, content_type="text/css")
+    #def handle_style(self):
+        #css = read_static("styles/style.css")
+        #self.respond(css, content_type="text/css")
 
     #def handle_style(self):
         #css_file = settings.PROJECT_DIR / "styles" / "style.css" #файл если в папке то "styles" / "styles.css"
@@ -94,9 +94,9 @@ class MyHttp(SimpleHTTPRequestHandler):
             #css = fp.read()
     #self.respond(css, content_type="text/css")
 
-    def handle_images(self):
-        image = read_static("images/images.svg")
-        self.respond(image, content_type="image/svg+xml")
+    #def handle_images(self):
+        #image = read_static("images/images.svg")
+        #self.respond(image, content_type="image/svg+xml")
 
     def handle_static(self, file_path, ct):
         content = read_static(file_path)
