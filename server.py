@@ -65,7 +65,7 @@ class MyHttp(SimpleHTTPRequestHandler):
     def handle_hello(self, endpoint):
         user = get_user_data(endpoint.query_string)
         #age = get_age_from_qs(endpoint.query_string)
-        year = datetime.today().year - user.age
+        year = datetime.now().year - user.age
 
         content = f"""
         <html>
