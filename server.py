@@ -2,15 +2,17 @@ import traceback
 from http.server import SimpleHTTPRequestHandler
 import settings
 
+from custom_types import Endpoint
 from errors import MethodNotAllowed
 from errors import NotFound
-from utils import normalize_path
+#from utils import normalize_path
 from utils import to_bytes
 from utils import read_static
 
 class MyHttp(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
-        path = normalize_path(self.path) # self.path - то что нам приходит с браузера
+        #path = normalize_path(self.path) # self.path - то что нам приходит с браузера
+        #endipoint = Endipoint.from_path
 
         # try:
         #     path_parts  = path.split("/")
@@ -20,16 +22,19 @@ class MyHttp(SimpleHTTPRequestHandler):
         # path = normalize_path(path_parts[1])
        # path = f"/{path}" if path != "/" else path
 
-        handlers = {
-            "/": self.handle_root,
-            "/hello/": self.handle_hello,
-            "/style/": self.handle_style,
-            "/images/": self.handle_images,
+        endpoint = Endpoint.from_path(self.path)
+        content_type = get_content_type(endpoint.file_name)
+
+        endpoints = {
+            "/": [self.handle_static, ["index.html", "text/html"]],
+            "/hello/": [self.handle_hello, [endpoint]],
+            "/i/": [self.handle_static, [f"images/{endpoint.file_name}", content_type]],
+            "/s/": [self.handle_static, [f"styles/{endpoint.file_name}", content_type]],
         }
 
         try:
-            handler = handlers[path]
-            handler()
+            handler, args = endpoints[endpoint.normal]
+            handler(*args)
         except (NotFound, KeyError):
             self.handle_404()
         except MethodNotAllowed:
@@ -53,20 +58,28 @@ class MyHttp(SimpleHTTPRequestHandler):
     def handle_root(self): #пищем функцию чтобы далее ее вызвать
         return super().do_GET() #обращаемся к родителю
 
-    def handle_hello(self): #пишем также функцию чтобы во втором if ее вызвать
+    def handle_hello(self, endpoint):
+        name = get_name_from_qs(endpoint.query_string)
+
         content = f"""
         <html>
-        <head>
-        <title>XXX</title>
-        </head>
+        <head><title>Hello Page</title></head>
         <body>
-        <h1>Hello world</h1> 
+        <h1>Hello {name}!</h1>
+        <h1>You was born at {2020}!</h1>
         <p>path: {self.path}</p>
+
+        <form>
+            <label for="xxx-id">Your name:</label>
+            <input type="text" name="xxx" id="xxx-id">
+            <button type="submit">Greet</button>
+        </form>
+
         </body>
         </html>
         """
 
-        self.respond(content) #используем аргумень контент и значение оттуда подставляется
+        self.respond(content)
 
 
     def handle_style(self):
