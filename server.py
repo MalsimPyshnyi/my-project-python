@@ -1,7 +1,7 @@
 import traceback
 from http.server import SimpleHTTPRequestHandler
 import settings
-
+from  utils import get_content_type
 from custom_types import Endpoint
 from errors import MethodNotAllowed
 from errors import NotFound
@@ -11,6 +11,8 @@ from utils import read_static
 
 class MyHttp(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
+        endpoint = Endpoint.from_path(self.path)
+        content_type = get_content_type(endpoint.file_name)
         #path = normalize_path(self.path) # self.path - то что нам приходит с браузера
         #endipoint = Endipoint.from_path
 
@@ -21,9 +23,6 @@ class MyHttp(SimpleHTTPRequestHandler):
         # file_path = path_parts[2]
         # path = normalize_path(path_parts[1])
        # path = f"/{path}" if path != "/" else path
-
-        endpoint = Endpoint.from_path(self.path)
-        content_type = get_content_type(endpoint.file_name)
 
         endpoints = {
             "/": [self.handle_static, ["index.html", "text/html"]],
