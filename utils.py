@@ -2,6 +2,7 @@ import mimetypes
 import settings
 from errors import NotFound
 from custom_types import User
+from urllib.parse import parse_qs
 
 
 #def normalize_path(path: str) -> str:
