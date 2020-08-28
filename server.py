@@ -62,12 +62,14 @@ class MyHttp(SimpleHTTPRequestHandler):
     def handle_hello(self, endpoint):
         name = get_name_from_qs(endpoint.query_string)
         your = get_age_from_qs(endpoint.query_string)
+        year = 2020 - your
+
         content = f"""
         <html>
         <head><title>Hello Page</title></head>
         <body>
         <h1>Hello {name}!</h1>
-        <h1>You was born at {your}!</h1>
+        <h1>You was born at {year}!</h1>
         <p>path: {self.path}</p>
 
         <form>

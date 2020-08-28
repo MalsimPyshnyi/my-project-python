@@ -60,9 +60,9 @@ def get_name_from_qs(qs: str) -> str:
 
     return "world"
 
-def get_age_from_qs(qs: str) ->str:
+def get_age_from_qs(qs: str) ->int:
     if not qs:
-        return "enter the number"
+        return 2020
 
     pairs = qs.split("&")
 
@@ -73,4 +73,4 @@ def get_age_from_qs(qs: str) ->str:
         if key == "yyy":
             return value
 
-        return "2020"
+        return 2020
