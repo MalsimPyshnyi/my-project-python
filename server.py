@@ -13,6 +13,7 @@ from utils import read_static
 from utils import get_user_data
 from datetime import datetime
 
+
 class MyHttp(SimpleHTTPRequestHandler):
     def do_GET(self): #метод, в котором мы задаем условия
         endpoint = Endpoint.from_path(self.path)
@@ -62,7 +63,7 @@ class MyHttp(SimpleHTTPRequestHandler):
         #return super().do_GET() #обращаемся к родителю
 
     def handle_hello(self, endpoint):
-        name, age = get_user_data(endpoint.query_string)
+        user = get_user_data(endpoint.query_string)
         #age = get_age_from_qs(endpoint.query_string)
         year = datetime.today().year - user.age
 
