@@ -7,19 +7,21 @@ from utils import get_content_type
 
 
 class HttpRequest(NamedTuple):
-    method: str
     original: str
     normal: str
+    method: str = "get"
     file_name: Optional[str] = None
     query_string: Optional[str] = None
-    content_type: Optional[str] = None
+    content_type: Optional[str] = "text/html"
 
     @classmethod
-    def from_path(cls, path: str, method: str) -> "HttpRequest":
-        if not path:
-            from consts import ROOT_REQUEST
+    def default(cls):
+        return HttpRequest(original="", normal="/")
 
-            return ROOT_REQUEST
+    @classmethod
+    def from_path(cls, path: str, method: Optional[str] = None) -> "HttpRequest":
+        if not path:
+            return cls.default()
 
         components = urlsplit(path)
 
@@ -35,7 +37,7 @@ class HttpRequest(NamedTuple):
         content_type = get_content_type(file_name)
 
         return HttpRequest(
-            method=method,
+            method=method or "get",
             original=path,
             normal=normal,
             file_name=file_name,
@@ -43,7 +45,10 @@ class HttpRequest(NamedTuple):
             content_type=content_type,
         )
 
-
 class User(NamedTuple):
     name: str
     age: int
+
+    @classmethod
+    def default(cls):
+        return User(name="anonymous", age=0)
