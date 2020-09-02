@@ -127,9 +127,6 @@ class MyHttp(SimpleHTTPRequestHandler):
         #image = read_static("images/images.svg")
         #self.respond(image, content_type="image/svg+xml")
 
-    def handle_static(self, file_path, content_type):
-        content = read_static(file_path)
-        self.respond(content, content_type=content_type)
 
     #def handle_images(self):
         #img_file = settings.PROJECT_DIR / "images" / "images.png"
@@ -140,25 +137,27 @@ class MyHttp(SimpleHTTPRequestHandler):
 
         #self.respond() # Тут нужно дописать код, разобраться
 
-    def handle_404(self):
-        msg = """NOT FOUND!!!!!!!"""
+    def handle_static(self, file_path, content_type):
+        content = read_static(file_path)
+        self.respond(content, content_type=content_type)
 
+    def handle_404(self):
+        msg = """CHECK YOU"""
         self.respond(msg, code=404, content_type="text/plain")
 
     def handle_405(self):
-
         self.respond("", code=405, content_type="text/plain")
 
     def handle_500(self):
-
-        self.respond(traceback.format_exc(), code=500, content_type="text/plain")
+        msg = traceback.format_exc()
+        self.respond(msg, code=500, content_type="text/plain")
 
     # def handle_static(self, file_path, conent_type):
     #     content = read_static()
     #     self.respond(content) #Разобраться с этим кусокм пока неясно
 
 
-    def respond(self, message, code=200, content_type="text/html"):  #функция которая будет передаватьяс в 404, 200 и так длаее
+    def respond(self, message, code=200, content_type="text/html"):
         payload = to_bytes(message)
 
         self.send_response(code)
