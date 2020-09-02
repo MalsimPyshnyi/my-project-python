@@ -1,23 +1,26 @@
 import traceback
+from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
+
 import settings
-from utils import get_content_type
-from custom_types import Endpoint
+from custom_types import HttpRequest
 from errors import MethodNotAllowed
 from errors import NotFound
-#from utils import normalize_path
-from utils import to_bytes
-from utils import read_static
-#from utils import get_name_from_qs
-#from utils import get_age_from_qs
 from utils import get_user_data
-from datetime import datetime
+from utils import read_static
+from utils import to_bytes
 
 
 class MyHttp(SimpleHTTPRequestHandler):
-    def do_GET(self): #метод, в котором мы задаем условия
-        endpoint = Endpoint.from_path(self.path)
-        content_type = get_content_type(endpoint.file_name)
+    def do_GET(self):
+        self.dispatch("get")
+
+    def do_POST(self):
+        self.dispatch("post")
+
+    def dispatch(self, http_method):
+        req = HttpRequest.from_path(self.path, method=http_method)
+
         #path = normalize_path(self.path) # self.path - то что нам приходит с браузера
         #endipoint = Endipoint.from_path
 
@@ -31,13 +34,20 @@ class MyHttp(SimpleHTTPRequestHandler):
 
         endpoints = {
             "/": [self.handle_static, ["index.html", "text/html"]],
-            "/hello/": [self.handle_hello, [endpoint]],
-            "/i/": [self.handle_static, [f"images/{endpoint.file_name}", content_type]],
-            "/s/": [self.handle_static, [f"styles/{endpoint.file_name}", content_type]],
+            "/hello/": [self.handle_hello, [req]],
+            "/i/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
+            "/s/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
         }
 
+        # endpoints = {
+        #     "/": [self.handle_static, ["index.html", "text/html"]],
+        #     "/hello/": [self.handle_hello, [endpoint]],
+        #     "/i/": [self.handle_static, [f"images/{endpoint.file_name}", content_type]],
+        #     "/s/": [self.handle_static, [f"styles/{endpoint.file_name}", content_type]],
+        # }
+
         try:
-            handler, args = endpoints[endpoint.normal]
+            handler, args = endpoints[req.normal]
             handler(*args)
         except (NotFound, KeyError):
             self.handle_404()
@@ -45,7 +55,6 @@ class MyHttp(SimpleHTTPRequestHandler):
             self.handle_405()
         except Exception:
             self.handle_500()
-
 
     #if path == "/":
             #self.handle_root() #вызываем  функцию, что хотим показывать
@@ -62,8 +71,20 @@ class MyHttp(SimpleHTTPRequestHandler):
     #def handle_root(self): #пищем функцию чтобы далее ее вызвать
         #return super().do_GET() #обращаемся к родителю
 
-    def handle_hello(self, endpoint):
-        user = get_user_data(endpoint.query_string)
+    def get_request_payload(self) -> str:
+        content_leght_in_str = self.headers.get("content-length", 0)
+        content_leght = int(content_leght_in_str)
+
+        if not content_leght
+            return ""
+
+        payload_in_bytes = self.rfile.read()
+        payload  = payload_in_bytes.decode()
+        return payload
+
+    def handle_hello(self, request):
+        query_string = request.query_string or self.get_request_payload()
+        user = get_user_data(query_string)
         #age = get_age_from_qs(endpoint.query_string)
         year = datetime.now().year - user.age
 
@@ -75,7 +96,7 @@ class MyHttp(SimpleHTTPRequestHandler):
         <h1>You was born at {year}!</h1>
         <p>path: {self.path}</p>
 
-        <form>
+        <form method="post">
             <label for="name-id">Your name:</label>
             <input type="text" name="name" id="name-id">
             <label for="age-id">Your age:</label>

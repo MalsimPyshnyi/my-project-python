@@ -1,35 +1,48 @@
 from itertools import takewhile
 from typing import NamedTuple
 from typing import Optional
+from urllib.parse import urlsplit
+
+from utils import get_content_type
 
 
-class Endpoint(NamedTuple):
+class HttpRequest(NamedTuple):
+    method: str
     original: str
     normal: str
-    file_name: Optional[str]
-    query_string: Optional[str]
+    file_name: Optional[str] = None
+    query_string: Optional[str] = None
+    content_type: Optional[str] = None
 
     @classmethod
-    def from_path(cls, path: str) -> "Endpoint":
+    def from_path(cls, path: str, method: str) -> "HttpRequest":
         if not path:
-            return Endpoint(original="", normal="/", file_name=None, query_string=None)
+            from consts import ROOT_REQUEST
 
-        xxx = path.split("?")
-        if len(xxx) == 2:
-            path, qs = xxx
-        else:
-            path, qs = xxx[0], None
+            return ROOT_REQUEST
 
-        parts = tuple(filter(bool, path.split("/")))
-        compiled = "/".join(takewhile(lambda part: "." not in part, parts))
-        normal = f"/{compiled}/" if compiled not in ("", "/") else "/"
+        components = urlsplit(path)
 
-        last = parts[-1] if parts else ""
+        segments = tuple(filter(bool, components.path.split("/")))
+        non_file_segments = takewhile(lambda part: "." not in part, segments)
+
+        compiled = "/".join(non_file_segments)
+        normal = f"/{compiled}/" if compiled not in {"", "/"} else "/"
+
+        last = segments[-1] if segments else ""
         file_name = last if "." in last else None
 
-        return Endpoint(
-            original=path, normal=normal, file_name=file_name, query_string=qs
+        content_type = get_content_type(file_name)
+
+        return HttpRequest(
+            method=method,
+            original=path,
+            normal=normal,
+            file_name=file_name,
+            query_string=components.query or None,
+            content_type=content_type,
         )
+
 
 class User(NamedTuple):
     name: str
