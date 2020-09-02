@@ -78,7 +78,7 @@ class MyHttp(SimpleHTTPRequestHandler):
         if not content_length:
             return ""
 
-        payload_in_bytes = self.rfile.read()
+        payload_in_bytes = self.rfile.read(content_length)
         payload  = payload_in_bytes.decode()
         return payload
 
