@@ -1,7 +1,7 @@
 import traceback
 from http.server import SimpleHTTPRequestHandler
 import settings
-from  utils import get_content_type
+from utils import get_content_type
 from custom_types import Endpoint
 from errors import MethodNotAllowed
 from errors import NotFound
