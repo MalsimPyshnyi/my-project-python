@@ -72,10 +72,10 @@ class MyHttp(SimpleHTTPRequestHandler):
         #return super().do_GET() #обращаемся к родителю
 
     def get_request_payload(self) -> str:
-        content_leght_in_str = self.headers.get("content-length", 0)
-        content_leght = int(content_leght_in_str)
+        content_length_in_str = self.headers.get("content-length", 0)
+        content_length = int(content_length_in_str)
 
-        if not content_leght
+        if not content_length:
             return ""
 
         payload_in_bytes = self.rfile.read()
