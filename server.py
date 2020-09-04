@@ -175,7 +175,7 @@ class MyHttp(SimpleHTTPRequestHandler):
     def redirect(self, to):
         self.send_response(302)
         self.send_header("Location", to)
-        self.send_headers()
+        self.end_headers()
 
 
     def get_request_payload(self) -> str:
