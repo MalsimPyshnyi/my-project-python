@@ -93,9 +93,9 @@ class MyHttp(SimpleHTTPRequestHandler):
 
         <form method="post" action=/"hello-update">
             <label for="name-id">Your name:</label>
-            <input type="text" name="name" id="name-id">
+            <input type="text" name="name" id="name-id" value="{user.name}">
             <label for="age-id">Your age:</label>
-            <input type="text" name="age" id="age-id">
+            <input type="text" name="age" id="age-id" value="{user.age}">
             <button type="submit">Greet</button>
         </form>
 
