@@ -167,7 +167,6 @@ class MyHttp(SimpleHTTPRequestHandler):
         self.send_response(code)
         self.send_header("Content-type", content_type)
         self.send_header("Content-length", str(len(payload)))
-        self.send_header("Cache-control", f"max-age={settings.CACHE_AGE}")
         self.end_headers()
         self.wfile.write(payload)
 
