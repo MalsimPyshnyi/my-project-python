@@ -2,7 +2,6 @@ import traceback
 from datetime import datetime
 from http.server import SimpleHTTPRequestHandler
 
-import settings
 from custom_types import HttpRequest
 from errors import MethodNotAllowed
 from errors import NotFound
