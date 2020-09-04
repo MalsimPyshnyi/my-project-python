@@ -18,6 +18,18 @@ def to_bytes(text: AnyStr) -> bytes:
     result = text.encode()
     return result
 
+def to_str(text: AnyStr) -> str:
+
+    result = text
+
+    if not isinstance(text, (str, bytes)):
+        result = str(text)
+
+    if isinstance(result, bytes):
+        result = result.decode()
+
+    return result
+
 
 def read_static(path: str) -> bytes:
 

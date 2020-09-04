@@ -9,6 +9,8 @@ from errors import NotFound
 from utils import get_user_data
 from utils import read_static
 from utils import to_bytes
+from utils import to_str
+from consts import USERS_DATA
 
 
 class MyHttp(SimpleHTTPRequestHandler):
@@ -72,42 +74,9 @@ class MyHttp(SimpleHTTPRequestHandler):
     #def handle_root(self): #пищем функцию чтобы далее ее вызвать
         #return super().do_GET() #обращаемся к родителю
 
-    def get_request_payload(self) -> str:
-        content_length_in_str = self.headers.get("content-length", 0)
-        content_length = int(content_length_in_str)
-
-        if not content_length:
-            return ""
-
-        payload_in_bytes = self.rfile.read(content_length)
-        payload  = payload_in_bytes.decode()
-        return payload
-
-    @staticmethod
-    def get_user_qs_from_file() -> str:
-        qs_file = STORAGE_DIR / "xxx.txt"
-        if not qs_file.is_file():
-            return ""
-
-        with qs_file.open("r") as src:
-            content = src.read()
-
-        if isinstance(content, bytes):
-            content = content.decode()
-
-        return content
-
-    @staticmethod
-    def save_user_qs_to_file(query: str) -> None:
-        qs_file = STORAGE_DIR / "xxx.txt"
-
-        with qs_file.open("w") as dst:
-            dst.write(query)
-
-
 
     def handle_hello(self, request: HttpRequest):
-        if request.method != "get";
+        if request.method != "get":
             raise MethodNotAllowed
 
         query_string = self.get_user_qs_from_file() #query_string = request.query_string or self.get_user_qs_from_file()
@@ -165,11 +134,11 @@ class MyHttp(SimpleHTTPRequestHandler):
         #self.respond() # Тут нужно дописать код, разобраться
 
     def handle_hello_update(self, request: HttpRequest):
-        if request.method != "post";
+        if request.method != "post":
             raise MethodNotAllowed
 
-        qs = self.get_post_qs
-        self.save_user_qs(qs)
+        qs = self.get_request_payload()
+        self.save_user_qs_to_file(qs)
         self.redirect("/hello")
 
 
@@ -205,4 +174,37 @@ class MyHttp(SimpleHTTPRequestHandler):
 
     def redirect(self, to):
         self.send_response(302)
+        self.send_header("Location", to)
+        self.send_headers()
 
+
+    def get_request_payload(self) -> str:
+        content_length_in_str = self.headers.get("content-length", 0)
+        content_length = int(content_length_in_str)
+
+        if not content_length:
+            return ""
+
+        payload_in_bytes = self.rfile.read(content_length)
+        payload = payload_in_bytes.decode()
+        return payload
+
+
+    @staticmethod
+    def get_user_qs_from_file() -> str:
+        if not USERS_DATA.is_file():
+            return ""
+
+        with USERS_DATA.open("r") as src:
+            content = src.read()
+
+        content = to_str(content)
+
+        return content
+
+
+    @staticmethod
+    def save_user_qs_to_file(query: str) -> None:
+
+        with USERS_DATA.open("w") as dst:
+            dst.write(query)
