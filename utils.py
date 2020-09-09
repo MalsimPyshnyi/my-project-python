@@ -1,6 +1,4 @@
-import mimetypes
 from typing import AnyStr
-from urllib.parse import parse_qs
 
 import settings
 from errors import NotFound
@@ -18,7 +16,13 @@ def to_bytes(text: AnyStr) -> bytes:
     result = text.encode()
     return result
 
+
 def to_str(text: AnyStr) -> str:
+    """
+    Safely converts any string to str.
+    :param text: any string
+    :return: str
+    """
 
     result = text
 
@@ -33,6 +37,7 @@ def to_str(text: AnyStr) -> str:
 
 def read_static(path: str) -> bytes:
 
+
     static_obj = settings.STATIC_DIR / path
     if not static_obj.is_file():
         static_path = static_obj.resolve().as_posix()
@@ -45,67 +50,7 @@ def read_static(path: str) -> bytes:
     return content
 
 
-def get_content_type(file_path: str) -> str:
 
-    if not file_path:
-        return "text/html"
-    content_type, _ = mimetypes.guess_type(file_path)
-    return content_type
-
-
-def get_user_data(query: str):
-
-    from custom_types import User
-
-    anonymous = User.default()
-
-    try:
-        key_value_pairs = parse_qs(query, strict_parsing=True)
-    except ValueError:
-        return anonymous
-
-    name_values = key_value_pairs.get("name", [anonymous.name])
-    name = name_values[0]
-
-    age_values = key_value_pairs.get("age", [anonymous.age])
-    age = age_values[0]
-
-    errors = {}
-
-    if not  name_valid(name):
-        errors["name"] = "name nor valid"
-
-    if not age_valid(age):
-        errors["age"] = "age not valid"
-
-    if errors:
-        raise ValueError
-
-    # if isinstance(age, str) and age.isdecimal():
-    #     age = int(age)
-
-    return User(name=name, age=age)
-
-def name_valid(value: str) -> bool:
-    not_empty = bool(value)
-    has_letters =not value.isdecimal()
-    normal_lenght = 3 < len(value) < 20
-
-
-    ok = all([not_empty, has_letters, normal_lenght])
-    return ok
-
-def age_valid(value: int) -> bool:
-    if not value:
-        return False
-    if not value.isdecimal():
-        return False
-    value = int(value)
-
-    if value < 0:
-        return False
-
-    return True
 
 
     # ok = all([value, value.isdecimal(), int(value)])
