@@ -10,6 +10,7 @@ from utils import read_static
 from utils import to_bytes
 from utils import to_str
 from consts import USERS_DATA
+from custom_types import User
 
 
 class MyHttp(SimpleHTTPRequestHandler):
@@ -79,7 +80,7 @@ class MyHttp(SimpleHTTPRequestHandler):
             raise MethodNotAllowed
 
         query_string = self.get_user_qs_from_file() #query_string = request.query_string or self.get_user_qs_from_file()
-        user = get_user_data(query_string)
+        user = User.from_query(query_string)
         #age = get_age_from_qs(endpoint.query_string)
         year = datetime.now().year - user.age
 

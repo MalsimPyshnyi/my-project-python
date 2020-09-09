@@ -69,11 +69,47 @@ def get_user_data(query: str):
 
     age_values = key_value_pairs.get("age", [anonymous.age])
     age = age_values[0]
-    if isinstance(age, str) and age.isdecimal():
-        age = int(age)
+
+    errors = {}
+
+    if not  name_valid(name):
+        errors["name"] = "name nor valid"
+
+    if not age_valid(age):
+        errors["age"] = "age not valid"
+
+    if errors:
+        raise ValueError
+
+    # if isinstance(age, str) and age.isdecimal():
+    #     age = int(age)
 
     return User(name=name, age=age)
 
+def name_valid(value: str) -> bool:
+    not_empty = bool(value)
+    has_letters =not value.isdecimal()
+    normal_lenght = 3 < len(value) < 20
+
+
+    ok = all([not_empty, has_letters, normal_lenght])
+    return ok
+
+def age_valid(value: int) -> bool:
+    if not value:
+        return False
+    if not value.isdecimal():
+        return False
+    value = int(value)
+
+    if value < 0:
+        return False
+
+    return True
+
+
+    # ok = all([value, value.isdecimal(), int(value)])
+    # return ok
 
 # import mimetypes
 # from typing import AnyStr
