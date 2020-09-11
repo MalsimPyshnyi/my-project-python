@@ -38,8 +38,8 @@ class MyHttp(SimpleHTTPRequestHandler):
             "/": [self.handle_static, ["index.html", "text/html"]],
             "/hello/": [self.handle_hello, [req]],
             "/hello-update/": [self.handle_hello_update, [req]],
-            "/image/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
-            "/style/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
+            "/i/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
+            "/s/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
         }
 
         # endpoints = {
