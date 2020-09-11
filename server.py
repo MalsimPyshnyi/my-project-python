@@ -194,7 +194,10 @@ class MyHttp(SimpleHTTPRequestHandler):
 
         return payload
 
-    def handle_hello_reset(self):
+    def handle_hello_reset(self, request: HttpRequest):
+        if request.method != "post":
+            raise MethodNotAllowed
+
         self.save_user_data(" ")
         self.redirect("/hello")
 
