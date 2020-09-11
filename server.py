@@ -38,8 +38,8 @@ class MyHttp(SimpleHTTPRequestHandler):
             "/": [self.handle_static, ["index.html", "text/html"]],
             "/hello/": [self.handle_hello, [req]],
             "/hello-update/": [self.handle_hello_update, [req]],
-            "/i/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
-            "/s/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
+            "/image/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
+            "/style/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
         }
 
         # endpoints = {
@@ -50,9 +50,12 @@ class MyHttp(SimpleHTTPRequestHandler):
         # }
 
         try:
-            handler, args = endpoints[req.normal]
+            try:
+                handler, args = endpoints[req.normal]
+            except KeyError:
+                raise NotFound
             handler(*args)
-        except (NotFound, KeyError):
+        except (NotFound):
             self.handle_404()
         except MethodNotAllowed:
             self.handle_405()

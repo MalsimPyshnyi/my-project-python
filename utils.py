@@ -18,11 +18,6 @@ def to_bytes(text: AnyStr) -> bytes:
 
 
 def to_str(text: AnyStr) -> str:
-    """
-    Safely converts any string to str.
-    :param text: any string
-    :return: str
-    """
 
     result = text
 
