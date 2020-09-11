@@ -38,6 +38,7 @@ class MyHttp(SimpleHTTPRequestHandler):
             "/": [self.handle_static, ["index.html", "text/html"]],
             "/hello/": [self.handle_hello, [req]],
             "/hello-update/": [self.handle_hello_update, [req]],
+            "/hello-reset": [self.handle_hello_reset, [req]],
             "/i/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
             "/s/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
         }
@@ -192,6 +193,12 @@ class MyHttp(SimpleHTTPRequestHandler):
         payload = to_str(payload_as_bytes)
 
         return payload
+
+    def handle_hello_reset(self):
+        self.save_user_data(" ")
+        self.redirect("/hello")
+
+
 
     @staticmethod
     def load_user_data() -> str:
