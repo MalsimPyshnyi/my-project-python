@@ -194,7 +194,7 @@ class MyHttp(SimpleHTTPRequestHandler):
 
         return payload
 
-    def handle_hello_reset(self):
+    def handle_hello_reset(self, request: HttpRequest):
         self.save_user_data(" ")
         self.redirect("/hello")
 
