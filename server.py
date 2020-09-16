@@ -112,13 +112,6 @@ class MyHttp(SimpleHTTPRequestHandler):
             utils.store_user_data(session, form_data)
             self.redirect("/hello", **response_kwargs)
 
-    def handle_hello_reset(self, request: custom_types.HttpRequest) -> None:
-        if request.method != "post":
-            raise errors.MethodNotAllowed
-
-        utils.drop_user_data(request.session)
-        self.redirect("/hello/", session="")
-
     def render_hello_page(
         self, new_user: custom_types.User, saved_user: custom_types.User
     ) -> str:
@@ -157,13 +150,18 @@ class MyHttp(SimpleHTTPRequestHandler):
             "class_for_age": css_class_for_age,
             "class_for_name": css_class_for_name,
             "year": year,
-            "fdsfdsfds": 2354234532,
         }
 
         content = template.render(**context)
 
         return content
 
+    def handle_hello_reset(self, request: custom_types.HttpRequest) -> None:
+        if request.method != "post":
+            raise errors.MethodNotAllowed
+
+        utils.drop_user_data(request.session)
+        self.redirect("/hello/", session="")
 
     def handle_zde(self):
         x = 1 / 0
