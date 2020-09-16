@@ -1,15 +1,90 @@
-total = 0
-for i in range(1, 5):
-    total += i
-print(total)
+names = ["Mike", "Tom", "Katy", "Alex"]
 
-total2 = 0
-i1 = 0
+for i in range(len(names)):
+    for j in range(i +1):
+         print(names[i])
 
-while i1 < 5:
-    total2 += i1
-    i1 += 1
-print(total2)
+
+
+
+
+
+
+
+
+# #Способ 1 через While
+# my_list = [7, 5, 4, 4, 3, 2, 1, -5, -10, -13, -15, -18]
+#
+# i = -1
+# total = 0
+#
+# while my_list[i] < 0:
+#     total = total + my_list[i]
+#     i = i - 1
+# print(total)
+#
+# #Спосбо 2 через While
+#
+# my_list1 = [7, 5, 4, 4, 3, 2, 1, -5, -10, -13, -15, -18]
+#
+# i1 = len(my_list1) - 1 #в данном случае мы идем с самого конца к началу
+# total1 = 0
+#
+# while i1 >= 0 and my_list[i1] <0:
+#     total1 = total1 + my_list1[i1]
+#     i1 = i1 - 1
+# print(total1)
+#
+# #Способ 3 через for
+#
+# my_list2 = [7, 5, 4, 4, 3, 2, 1, -5, -10, -13, -15, -18]
+#
+# total2 = 0
+#
+# for i2 in range(len(my_list2) -1, -1, -1):
+#     if my_list2[i2] > 0:
+#         break
+#     total2 = total2 + my_list2[i2]
+# print(total2)
+#
+#
+# #Способ через цикл While:
+# word = ["monday", "tuesday", "wednesday", "thursday", "friday", "stop", "saturday", "sunday"]
+#
+# i3 = 0
+# while word[i3] != "stop":
+#     print(word[i3])
+#     i3 += 1
+#
+# #Способ через цикл for:
+#
+# for i4 in range(len(word)):
+# # Если натыкаемся на слово "stop", выходим из цикла
+#     if word[i4] == "stop":
+#         break
+#     print(word[i4])
+
+
+
+
+
+
+
+
+
+
+# total = 0
+# for i in range(1, 5):
+#     total += i
+# print(total)
+#
+# total2 = 0
+# i1 = 0
+#
+# while i1 < 5:
+#     total2 += i1
+#     i1 += 1
+# print(total2)
 
 
 

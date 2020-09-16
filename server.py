@@ -78,11 +78,29 @@ class MyHttp(SimpleHTTPRequestHandler):
     #def handle_root(self): #пищем функцию чтобы далее ее вызвать
         #return super().do_GET() #обращаемся к родителю
 
+    def get_session(self) ->str:
+        cookie = self.headers.get("Cookie", "")
+        qs = parse_qs(cookie)
+        session = qs.get("session", "")
+        return session
+
+
+    def generate_new_session() -> str:
+
+
+
     def handle_hello(self, request: HttpRequest):
         if request.method != "get":
             raise MethodNotAllowed
 
-        query = self.load_user_data()
+        session = self.get_session
+        if not session:
+            session = self.generate_new_session()
+            user = User.build("")
+            content = self.render_hello_page(user, user)
+            self.respond(content, session=session)
+
+        query = self.load_user_data(session)
         user = User.build(query)
 
         content = self.render_hello_page(user, user)
@@ -168,18 +186,21 @@ class MyHttp(SimpleHTTPRequestHandler):
         msg = traceback.format_exc()
         self.respond(msg, code=500, content_type="text/plain")
 
-    def respond(self, message, code=200, content_type="text/html"):
+    def respond(self, message, code=200, content_type="text/html", session: str = ""):
         payload = to_bytes(message)
 
         self.send_response(code)
         self.send_header("Content-type", content_type)
         self.send_header("Content-length", str(len(payload)))
+"       if session:
+            self.send_header("Set-Cookie", f"session(session))"
         self.end_headers()
         self.wfile.write(payload)
 
     def redirect(self, to):
         self.send_response(302)
         self.send_header("Location", to)
+        self.send_header("Set-Cookie", session)
         self.end_headers()
 
     def get_form_data(self) -> str:
@@ -204,7 +225,11 @@ class MyHttp(SimpleHTTPRequestHandler):
 
 
     @staticmethod
-    def load_user_data() -> str:
+    def load_user_data(session: str) -> str:
+        if not  session:
+            return ""
+
+        session_file = STORAGE_DIR / ("user_{session}.txt")
         if not USERS_DATA.is_file():
             return ""
 
