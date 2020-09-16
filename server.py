@@ -84,10 +84,10 @@ class MyHttp(SimpleHTTPRequestHandler):
         if request.method != "get":
             raise errors.MethodNotAllowed
 
-        user_data = utils.load_user_data(request.session)
-        user = custom_types.User.build(user_data)
+        profile = utils.load_profile(request.session)
+        user = custom_types.User.build(profile)
 
-        content = self.render_hello_page(user, user)
+        content = self.render_hello_page(request, user, user)
 
         self.respond(content)
 
@@ -105,16 +105,19 @@ class MyHttp(SimpleHTTPRequestHandler):
             response_kwargs["session"] = session
 
         if new_user.errors:
-            saved_data = utils.load_user_data(session)
+            saved_data = utils.load_profile(session)
             saved_user = custom_types.User.build(saved_data)
-            html = self.render_hello_page(new_user, saved_user)
+            html = self.render_hello_page(request, new_user, saved_user)
             self.respond(html, **response_kwargs)
         else:
-            utils.store_user_data(session, form_data)
+            utils.store_profile(session, form_data)
             self.redirect("/hello", **response_kwargs)
 
     def render_hello_page(
-        self, new_user: custom_types.User, saved_user: custom_types.User
+        self,
+        request: custom_types.HttpRequest,
+        new_user: custom_types.User,
+        saved_user: custom_types.User,
     ) -> str:
         css_class_for_name = css_class_for_age = ""
         label_for_name = "Your name: "
@@ -139,6 +142,8 @@ class MyHttp(SimpleHTTPRequestHandler):
             name_new = new_user.name
             age_new = new_user.age
 
+        theme = utils.load_theme(request.session)
+
         html = utils.read_static("hello.html").decode()
         template = Template(html)
 
@@ -151,6 +156,8 @@ class MyHttp(SimpleHTTPRequestHandler):
             "class_for_age": css_class_for_age,
             "class_for_name": css_class_for_name,
             "year": year,
+            "fdsfdsfds": 2354234532,
+            "theme": theme,
         }
 
         content = template.render(**context)
@@ -161,8 +168,8 @@ class MyHttp(SimpleHTTPRequestHandler):
         if request.method != "post":
             raise errors.MethodNotAllowed
 
-        utils.drop_user_data(request.session)
-        self.redirect("/hello/", session="")
+        utils.drop_profile(request.session)
+        self.redirect("/hello/")
 
     def handle_theme(self, request: custom_types.HttpRequest) -> None:
         if request.method != "post":
