@@ -37,12 +37,12 @@ class MyHttp(SimpleHTTPRequestHandler):
         endpoints = {
             "/": [self.handle_static, ["index.html", "text/html"]],
             "/0/": [self.handle_zde, []],
-            "/hello/": [self.handle_hello, [req]],
-            "/hello-update/": [self.handle_hello_update, [req]],
             "/hello-reset/": [self.handle_hello_reset, [req]],
-            "/hello-them/": [self.handle_hello_reset, [req]],
+            "/hello-update/": [self.handle_hello_update, [req]],
+            "/hello/": [self.handle_hello, [req]],
             "/i/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
             "/s/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
+            "/theme/": [self.handle_theme, [req]],
         }
 
         # endpoints = {
@@ -164,9 +164,21 @@ class MyHttp(SimpleHTTPRequestHandler):
         utils.drop_user_data(request.session)
         self.redirect("/hello/", session="")
 
-    def handle_hello_them(self, request: custom_types.HttpRequest) -> None:
+    def handle_theme(self, request: custom_types.HttpRequest) -> None:
         if request.method != "post":
             raise errors.MethodNotAllowed
+
+        response_kwargs = {}
+        session = request.session
+        if not session:
+            session = utils.generate_new_session()
+            response_kwargs["session"] = session
+
+        current_theme = utils.load_theme(session)
+        new_theme = utils.switch_theme(current_theme)
+        utils.store_theme(session, new_theme)
+
+        self.redirect("/hello", **response_kwargs)
 
 
 
