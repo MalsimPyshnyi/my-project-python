@@ -40,6 +40,7 @@ class MyHttp(SimpleHTTPRequestHandler):
             "/hello/": [self.handle_hello, [req]],
             "/hello-update/": [self.handle_hello_update, [req]],
             "/hello-reset/": [self.handle_hello_reset, [req]],
+            "/hello-them/": [self.handle_hello_reset, [req]],
             "/i/": [self.handle_static, [f"images/{req.file_name}", req.content_type]],
             "/s/": [self.handle_static, [f"styles/{req.file_name}", req.content_type]],
         }
@@ -162,6 +163,12 @@ class MyHttp(SimpleHTTPRequestHandler):
 
         utils.drop_user_data(request.session)
         self.redirect("/hello/", session="")
+
+    def handle_hello_them(self, request: custom_types.HttpRequest) -> None:
+        if request.method != "post":
+            raise errors.MethodNotAllowed
+
+
 
     def handle_zde(self):
         x = 1 / 0
