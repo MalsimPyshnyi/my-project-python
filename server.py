@@ -3,7 +3,6 @@ import traceback
 from datetime import date
 from http.server import SimpleHTTPRequestHandler
 from typing import Optional
-
 from jinja2 import Template
 
 import consts
@@ -20,7 +19,9 @@ class MyHttp(SimpleHTTPRequestHandler):
         self.dispatch("post")
 
     def dispatch(self, http_method):
-        req = HttpRequest.from_path(self.path, method=http_method)
+        req = custom_types.HttpRequest.build(
+            self.path, method=http_method, headers=self.headers
+        )
 
         #path = normalize_path(self.path) # self.path - то что нам приходит с браузера
         #endipoint = Endipoint.from_path
@@ -53,11 +54,11 @@ class MyHttp(SimpleHTTPRequestHandler):
             try:
                 handler, args = endpoints[req.normal]
             except KeyError:
-                raise NotFound
+                raise errors.NotFound
             handler(*args)
-        except (NotFound):
+        except errors.NotFound:
             self.handle_404()
-        except MethodNotAllowed:
+        except errors.MethodNotAllowed:
             self.handle_405()
         except Exception:
             self.handle_500()
@@ -167,8 +168,8 @@ class MyHttp(SimpleHTTPRequestHandler):
         x = 1 / 0
         print(x)
 
-    def handle_static(self, file_path, content_type):
-        content = read_static(file_path)
+    def handle_static(self, file_path, content_type) -> None:
+        content = utils.read_static(file_path)
         self.respond(content, content_type=content_type)
 
     def handle_404(self):
