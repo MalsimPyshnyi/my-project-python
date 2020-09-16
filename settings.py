@@ -13,3 +13,5 @@ TESTS_DIR = PROJECT_DIR / "tests"
 ARTIFACTS_DIR = TESTS_DIR / "functional" / "artifacts"
 
 STORAGE_DIR = PROJECT_DIR / "storage"
+
+SITE = os.getenv("SITE", "localhost")

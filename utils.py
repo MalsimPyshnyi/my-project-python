@@ -1,6 +1,12 @@
+import os
+from http import cookies
 from typing import AnyStr
+from typing import Dict
+from typing import Optional
 
 import settings
+from consts import SESSION_AGE
+from consts import SESSION_COOKIE
 from errors import NotFound
 
 
@@ -32,7 +38,6 @@ def to_str(text: AnyStr) -> str:
 
 def read_static(path: str) -> bytes:
 
-
     static_obj = settings.STATIC_DIR / path
     if not static_obj.is_file():
         static_path = static_obj.resolve().as_posix()
@@ -45,7 +50,83 @@ def read_static(path: str) -> bytes:
     return content
 
 
+def get_session_from_headers(headers: Optional[Dict]) -> Optional[str]:
 
+    if not headers:
+        return None
+
+    cookie_header = headers.get("Cookie")
+    if not cookie_header:
+        return None
+
+    jar = cookies.SimpleCookie()
+    jar.load(cookie_header)
+    if SESSION_COOKIE not in jar:
+        return None
+
+    session_morsel = jar[SESSION_COOKIE]
+    return session_morsel.value
+
+
+def generate_new_session() -> str:
+
+    session = os.urandom(16).hex()
+    return session
+
+
+def build_session_header(session: str, expires: bool = False) -> str:
+
+    jar = cookies.SimpleCookie()
+    jar[SESSION_COOKIE] = session
+    morsel = jar[SESSION_COOKIE]
+
+    morsel["Domain"] = settings.SITE
+    morsel["Path"] = "/"
+
+    max_ages = {
+        False: SESSION_AGE,
+        True: 0,
+    }
+    morsel["Max-Age"] = max_ages[expires]
+
+    header = jar[SESSION_COOKIE].OutputString()
+
+    return header
+
+
+def load_user_data(session: Optional[str]) -> str:
+
+    if not session:
+        return ""
+
+    data_file = settings.STORAGE_DIR / f"user_{session}.txt"
+    if not data_file.is_file():
+        return ""
+
+    with data_file.open("r") as src:
+        data = src.read()
+
+    data = to_str(data)
+
+    return data
+
+
+def store_user_data(session: Optional[str], data: str) -> None:
+
+    if not session:
+        return
+
+    data_file = settings.STORAGE_DIR / f"user_{session}.txt"
+    with data_file.open("w") as dst:
+        dst.write(data)
+
+
+def drop_user_data(session: Optional[str]) -> None:
+
+    if not session:
+        return
+
+    store_user_data(session, "")
 
 
     # ok = all([value, value.isdecimal(), int(value)])
