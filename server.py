@@ -36,6 +36,7 @@ class MyHttp(SimpleHTTPRequestHandler):
 
         endpoints = {
             "/": [self.handle_static, ["index.html", "text/html"]],
+            "/0/": [self.handle_zde, []],
             "/hello/": [self.handle_hello, [req]],
             "/hello-update/": [self.handle_hello_update, [req]],
             "/hello-reset/": [self.handle_hello_reset, [req]],
