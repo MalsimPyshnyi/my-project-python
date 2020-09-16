@@ -156,7 +156,6 @@ class MyHttp(SimpleHTTPRequestHandler):
             "class_for_age": css_class_for_age,
             "class_for_name": css_class_for_name,
             "year": year,
-            "fdsfdsfds": 2354234532,
             "theme": theme,
         }
 
