@@ -9,7 +9,8 @@ httpie = "*"
 [packages]
 django = "*"
 jinja2 = "*"
-
+pytest = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.8"
