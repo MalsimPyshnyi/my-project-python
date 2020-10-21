@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My first maket {% block title %}{% endblock %}</title>
+  <link href="{% static 'styles/style.css' %}" rel="stylesheet" type="text/css">
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+<nav>
+  <p><a href="{% url 'home:index' %}"><span>Arsenal</span></a></p>
+  <p><a href="{% url 'hello:index' %}"><span>"Hello" app</span></a></p>
+</nav>
+
+<main>
+  {% block main %}{% endblock %}
+</main>
+  {% block body %}{% endblock %}
+
+</body>
+
+</html>
