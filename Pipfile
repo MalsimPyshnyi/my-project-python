@@ -16,6 +16,7 @@ dj-config-url = "*"
 psycopg2-binary = "*"
 whitenoise = "*"
 sentry-sdk = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
