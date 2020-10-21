@@ -11,6 +11,10 @@ django = "*"
 jinja2 = "*"
 pytest = "*"
 selenium = "*"
+dynaconf = "*"
+dj-config-url = "*"
+psycopg2-binary = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.8"
