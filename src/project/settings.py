@@ -13,10 +13,13 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
+import sentry_sdk
 
 from dynaconf import settings as _ds
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from sentry_sdk.integrations.django import DjangoIntegration
+
 REPO_DIR = Path(__file__).resolve().parent.parent.parent
 BASE_DIR = REPO_DIR / "src"
 PROJECT_DIR = BASE_DIR / "project"
@@ -28,9 +31,17 @@ PROJECT_DIR = BASE_DIR / "project"
 SECRET_KEY = '0uy0_es(lfy4j3r(f&7ii7zah@xk2jn$y6nafgrghxqz9y=hm-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = _ds.DEBUG
 
-ALLOWED_HOSTS = []
+if not DEBUG:
+    sentry_sdk.init(
+        dsn=_ds.SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+        traces_sample_rate=1.0,
+        send_default_pii=True,
+    )
+
+ALLOWED_HOSTS = _ds.ALLOWED_HOSTS + ["localhost", "127.0.0.1"]
 
 
 # Application definition

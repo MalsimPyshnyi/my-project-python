@@ -15,6 +15,7 @@ dynaconf = "*"
 dj-config-url = "*"
 psycopg2-binary = "*"
 whitenoise = "*"
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.8"
